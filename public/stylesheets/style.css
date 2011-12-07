@@ -77,6 +77,11 @@ p {
   margin: 10px 0;
 }
 
+img {
+  margin: 0 auto;
+  display: block;
+}
+
 #container {
   width: 800px;
   margin: 10px auto;
