@@ -107,6 +107,7 @@ header #logo {
   margin: 0;
   padding: 10px;
   font-family: sans-serif;
+  text-align: center;
 }
 
 footer p {
