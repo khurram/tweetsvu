@@ -8,7 +8,7 @@ audio:not([controls]) { display: none; }
 [hidden] { display: none; }
 
 html { font-size: 100%; overflow-y: scroll; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-body { margin: 0; font-size: 14px; line-height: 1.231; }
+body { margin: 0; font-size: 13px; line-height: 1.231; }
 body, button, input, select, textarea { font-family: sans-serif; color: #222; }
 
 ::-moz-selection { background: #fe57a1; color: #fff; text-shadow: none; }
@@ -61,59 +61,54 @@ input:invalid, textarea:invalid { background-color: #f0dddd; }
 table { border-collapse: collapse; border-spacing: 0; }
 td { vertical-align: top; }
 
-
 /* ==|== primary styles =====================================================
  */
 
-body {
-  background: #efefef;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  margin: 20px 0 10px 0;
-}
-
-p {
-  margin: 10px 0;
-}
-
-img {
-  margin: 0 auto;
-  display: block;
-}
-
-#container {
-  width: 800px;
-  margin: 10px auto;
-}
+body { background-color: #f5f5f5; font: 16px Palatino, serif; line-height: 1.4; }
+h1, h2, h3 { margin: 20px 0 10px 0; }
+p, a, ul { margin: 10px 0; }
+a { text-decoration: none; }
+img { margin: 0 auto; display: block; }
 
 header {
+  position: fixed;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  height: 40px;
+  background: #252525 url('../images/headerbg.png') repeat-x 0 0;
+  -webkit-box-shadow: 0 3px 3px rgba(0,0,0,.25);
+     -moz-box-shadow: 0 3px 3px rgba(0,0,0,.25);
+          box-shadow: 0 3px 3px rgba(0,0,0,.25);
 }
 
-header h1 {
-  color: #A00;
-  margin-left: 20px;
-  font-size: 36px;
+header #logo {
+  margin: 0 auto;
+  width: 820px;
+  font: bold 28px sans-serif;
+  color: white;
 }
 
 #main {
-  background: #fff;
-  box-shadow: 1px 1px 10px #999;
-  padding: 20px;
+  background: white;
+  width: 740px;
+  margin: 60px auto 80px;
+  padding: 40px 60px;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  -webkit-box-shadow: 0 5px 15px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 15px rgba(0,0,0,.2);
+          box-shadow: 0 5px 15px rgba(0,0,0,.2);  
 }
 
 #status {
   background: #ffff99;
-  padding: 10px;
-  margin-bottom: 20px;
-}
-
-#status h2 {
   margin: 0;
+  padding: 10px;
+  font-family: sans-serif;
 }
 
 footer p {
-  float: right;
-  margin-right: 10px;
-  font-size: 12px;
+  text-align: center;
 }
