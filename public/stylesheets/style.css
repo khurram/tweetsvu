@@ -61,8 +61,7 @@ input:invalid, textarea:invalid { background-color: #f0dddd; }
 table { border-collapse: collapse; border-spacing: 0; }
 td { vertical-align: top; }
 
-/* ==|== primary styles =====================================================
- */
+/* ==|== primary styles ===================================================== */
 
 body { background-color: #f5f5f5; font: 16px Palatino, serif; line-height: 1.4; }
 h1, h2, h3 { margin: 20px 0 10px 0; }
@@ -89,6 +88,10 @@ header #logo {
   color: white;
 }
 
+header #logo a {
+  color: white;
+}
+
 #main {
   background: white;
   width: 740px;
@@ -112,4 +115,52 @@ header #logo {
 
 footer p {
   text-align: center;
+}
+
+/* ==|== index ============================================================== */
+
+#queryform {
+  font-size: 24px;
+  margin: 0 auto 50px auto;
+  width: 520px;
+}
+
+input#box {
+  padding: 6px;
+  border: 1px solid #999;
+  width: 400px;
+  -moz-box-shadow:inset 2px 2px 5px #ccc;
+  box-shadow:inset 2px 2px 5px #ccc;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+}
+
+input#submit {
+  width: 100px;
+  height: 41px;
+  border: none;
+  color: white;
+  background-color:#4099FF;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+}
+
+.tweet {
+  float: left;
+  width: 100%;
+  border-top: 1px dotted #ccc;
+  padding: 10px 0;
+  margin-bottom: 10px;
+}
+
+.profileimage {
+  float: left;
+  margin-right: 30px;
+}
+
+.tweetcontent {
+  float: left;
+  width: 660px;
 }
