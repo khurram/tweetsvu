@@ -8,7 +8,7 @@ class MyApp < Sinatra::Base
   
   post '/search' do
     @query = params[:query]
-    @results = Twitter.search(@query)
+    @results = Twitter.search(@query, :rpp => 100, :include_entities => true)
     erb :index
   end
 

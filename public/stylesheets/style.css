@@ -14,8 +14,8 @@ body, button, input, select, textarea { font-family: sans-serif; color: #222; }
 ::-moz-selection { background: #fe57a1; color: #fff; text-shadow: none; }
 ::selection { background: #fe57a1; color: #fff; text-shadow: none; }
 
-a { color: #00e; }
-a:visited { color: #551a8b; }
+a { color: #4099FF; }
+a:visited { color: #4099FF; }
 a:hover { color: #06e; }
 a:focus { outline: thin dotted; }
 a:hover, a:active { outline: 0; }
@@ -81,15 +81,24 @@ header {
           box-shadow: 0 3px 3px rgba(0,0,0,.25);
 }
 
-header #logo {
+header #headermiddle {
   margin: 0 auto;
   width: 820px;
-  font: bold 28px sans-serif;
-  color: white;
 }
 
+header #logo {
+  float: left;
+  padding-top: 2px;
+}
 header #logo a {
   color: white;
+  font: bold 28px sans-serif;
+}
+
+header #reportlink {
+  float: right;
+  padding-top: 6px;
+  font-size: 20px;
 }
 
 #main {
