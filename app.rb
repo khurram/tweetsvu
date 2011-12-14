@@ -1,13 +1,16 @@
 require 'sinatra/base'
 require 'twitter'
+require 'twitter-text'
 
 class MyApp < Sinatra::Base
+  include Twitter::Autolink
+  
   get '/' do
     erb :index
   end
   
-  post '/search' do
-    @query = params[:query]
+  get '/search' do
+    @query = params[:q]
     @results = Twitter.search(@query, :rpp => 100, :include_entities => true)
     erb :index
   end

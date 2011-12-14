@@ -1,5 +1,5 @@
-<form id="queryform" action="/search" method="post">
-  <input type="text" name="query" class="span8" placeholder="#hashtag"/>	
+<form id="queryform" action="/search" method="get">
+  <input type="text" name="q" required="required" class="span8" placeholder="#hashtag"/>	
   <input type="submit" class="btn primary" value="Search"/>
 </form>
 
@@ -8,12 +8,12 @@
 		<% @results.each do |r| %>
 			<!--<td><%=r.inspect%></td>-->
 			<div class="row">
-        <div class="span2">
+        <div class="span2" class="thumbnail">
           <img src="<%= r.profile_image_url %>">
         </div>
         
         <div class="span10">
-          <p>@<%= r.from_user %><br /><%= r.text %></p>
+          <p><%= auto_link("@"+r.from_user) %><br /><%= auto_link(r.text) %></p>
         </div>
       </div>
 		<%end%>
