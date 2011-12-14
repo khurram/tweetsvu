@@ -9,22 +9,32 @@
   <link rel="stylesheet" href="stylesheets/style.css">
 </head>
 <body>
-  <header>
-    <div id="headermiddle">
-      <div id="logo">
-        <a href="/">tweetsvu</a>
-      </div>
-      <div id="reportlink">
-        <a href="/report">View the report</a>
-      </div>
-    </div>
-  </header>
+  <div class="topbar">
+    <div class="fill">
+      <div class="container">        
+        <a class="brand" href="/">tweetsvu</a>
+        <ul class="nav">
+          <li class="active"><a href="/">App</a></li>
+          <li><a href="/report">Report</a></li>
+        </ul>
+        
+        <form action="" class="pull-right">
+          <input class="input-small" type="text" placeholder="Username">
+          <input class="input-small" type="password" placeholder="Password">
+          <button class="btn" type="submit">Sign in</button>
+        </form>
+      </div> <!-- end of .container -->
+    </div> <!-- end of .fill -->
+  </div> <!-- end of .topbar -->
   
-  <div id="main" role="main">
-    <%= yield %>
-    <hr>
-    <footer>
-      <p>This project is being developed by <a href="mailto:khurram@aslam.me">Khurram Aslam</a> under supervision of <a href="http://homepages.inf.ed.ac.uk/ewan/">Ewan Klein</a> at the<br /> University of Edinburgh 2011</p>
-  </div><!-- end of #main -->
+  <div class="container">
+    <div class="content">
+      <%= yield %>
+      
+      <footer>
+        <p>This project is being developed by <a href="mailto:khurram@aslam.me">Khurram Aslam</a> under supervision of <a href="http://homepages.inf.ed.ac.uk/ewan/">Ewan Klein</a> at the<br /> University of Edinburgh 2011</p>
+      </footer>
+    </div> <!-- end of .content -->
+  </div> <!-- end of .container -->
 </body>
 </html>

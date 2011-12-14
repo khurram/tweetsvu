@@ -1,19 +1,21 @@
 <form id="queryform" action="/search" method="post">
-  <input type="text" name="query" id="box" placeholder="#hashtag"/>	
-  <input type="submit" id="submit" value="Search"/>
+  <input type="text" name="query" class="span8" placeholder="#hashtag"/>	
+  <input type="submit" class="btn primary" value="Search"/>
 </form>
 
 <% if @results %>
+  <div id="results">
 		<% @results.each do |r| %>
 			<!--<td><%=r.inspect%></td>-->
-			<div class="tweet">
-        <div class="profileimage">
+			<div class="row">
+        <div class="span2">
           <img src="<%= r.profile_image_url %>">
         </div>
-        <div class="tweetcontent">
-          <span class="profilename">@<%= r.from_user %></span>
-          <p><%= r.text %></p>
+        
+        <div class="span10">
+          <p>@<%= r.from_user %><br /><%= r.text %></p>
         </div>
       </div>
 		<%end%>
+  </div>
 <% end %>
