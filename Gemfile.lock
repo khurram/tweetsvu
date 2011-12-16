@@ -24,6 +24,8 @@ GEM
       faraday (~> 0.7)
       multi_json (~> 1.0)
       simple_oauth (~> 0.1)
+    twitter-text (1.4.15)
+      activesupport
 
 PLATFORMS
   ruby
@@ -31,3 +33,4 @@ PLATFORMS
 DEPENDENCIES
   sinatra
   twitter
+  twitter-text
