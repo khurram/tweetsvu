@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+{% block body %}
+<form id="queryform" action="/search" method="get">
+    <input type="text" name="q" required="required" class="span8" placeholder="#hashtag"/>
+    <input type="submit" class="btn primary" value="Search"/>
+</form>
+
+<div id="results">
+    {% for tweet in results["results"]: %}
+    <div class="row">
+        <div class="span2" class="thumbnail">
+            <img src='{% print tweet["profile_image_url"] %}'>
+        </div>
+        
+        <div class="span10">
+            <p>{% print "@"+tweet["from_user"] %}<br />{% print Autolink(tweet["text"]).text %}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

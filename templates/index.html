@@ -1,24 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 <form id="queryform" action="/search" method="get">
-  <input type="text" name="q" required="required" class="span8" placeholder="#hashtag"/>	
-  <input type="submit" class="btn primary" value="Search"/>
+    <input type="text" name="q" required="required" class="span8" placeholder="#hashtag"/>
+    <input type="submit" class="btn primary" value="Search"/>
 </form>
-<!--
-<% if @results %>
-  <div id="results">
-		<% @results.each do |r| %>
-			<div class="row">
-        <div class="span2" class="thumbnail">
-          <img src="<%= r.profile_image_url %>">
-        </div>
-        
-        <div class="span10">
-          <p><%= auto_link("@"+r.from_user) %><br /><%= auto_link(r.text) %></p>
-        </div>
-      </div>
-		<%end%>
-  </div>
-<% end %>
--->
 {% endblock %}
