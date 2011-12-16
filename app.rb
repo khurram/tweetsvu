@@ -2,7 +2,7 @@ require 'sinatra/base'
 require 'twitter'
 require 'twitter-text'
 
-class MyApp < Sinatra::Base
+class App < Sinatra::Base
   include Twitter::Autolink
   
   get '/' do
