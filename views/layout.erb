@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>tweetsvu</title>
+  <meta name="description" content="tweetsvu is a final year honours project that evaluates better representations of Twitter search results">
+  <meta name="author" content="Khurram Aslam">
+  <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+<body>
+  <div class="topbar">
+    <div class="fill">
+      <div class="container">        
+        <a class="brand" href="/"><span class="blue">#</span>tweetsvu</a>
+        <ul class="nav">
+          <li class="active"><a href="/">App</a></li>
+          <li><a href="/report">Report</a></li>
+        </ul>
+        
+        <form action="" class="pull-right">
+          <input class="input-small" type="text" placeholder="Username">
+          <input class="input-small" type="password" placeholder="Password">
+          <button class="btn" type="submit">Sign in</button>
+        </form>
+      </div> <!-- end of .container -->
+    </div> <!-- end of .fill -->
+  </div> <!-- end of .topbar -->
+  
+  <div class="container">
+    <div class="content">
+      <%= yield %>
+      
+      <footer>
+        <p>This project is being developed by <a href="mailto:khurram@aslam.me">Khurram Aslam</a> under supervision of <a href="http://homepages.inf.ed.ac.uk/ewan/">Ewan Klein</a> at the<br /> University of Edinburgh</p>
+      </footer>
+    </div> <!-- end of .content -->
+  </div> <!-- end of .container -->
+</body>
+</html>

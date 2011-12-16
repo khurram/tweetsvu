@@ -1,0 +1,67 @@
+<h1 id="status">Status: Designing the Approach</h1>
+<h1>Abstract</h1>
+<p><a href="http://twitter.com">Twitter</a> has established itself as a dominant force in the online social networking movement. The majority of Twitter users maintain their profile, update statuses or send messages to friends and followers. 250 Million of these messages are posted a day and thus mining this data is of great interest to researchers, marketers and regular users</p>
+<p>Twitter provide a search interface to traverse their data, which is essentially a bolted on traditional search engine. The single ranked list used however is not a good solution for presenting the unconventional nature of Twitter data. A more elegant approach that considers original messages, re-tweets, social graphs and location is much more appropriate for this type of data.</p>
+<p>In this project we establish the problems with the traditional list representation used in Twitter search, describe alternative design solutions that better present the data, making it easier to navigate and explore, and finally present a solution that proves useful for users wishing to see trends and explore the data in novel way.</p>
+
+<h1>1. Introduction</h1>
+
+<h1>2. Literature Review</h1>
+<h2>2.1 Related Work</h2>
+<ul>
+  <li><a href="http://www.hilarymason.com/">Hilary Mason</a></li>
+  <li><a href="http://cacm.acm.org/blogs/blog-cacm/71444-third-workshop-on-search-and-social-media-ssm-2010/fulltext">Search and Social Media (SSM2010)</a></li>
+  <li><a href="http://www.fxpal.com/publications/FXPAL-PR-10-555.pdf">Making Sense of Twitter Search (Apr 10)</a></li>
+  <li><a href="http://cs.unc.edu/~julia/accepted-papers/bernstein-microbloggingCHI2010-cameraready.pdf">Managing information overload in online social streams</a></li>
+  <li><a href="http://palblog.fxpal.com">FXPAL Blog</a></li>
+  <li><a href="http://socialmention.com">Socialmention</a></li>
+  <li><a href="http://rs.peoplebrowsr.com">PeopleBrowsr</a></li>
+  <li><a href="http://twapperkeeper.com">Twapperkeeper</a></li>
+  <li><a href="http://brodiesnotes.blogspot.com/2011/05/list-of-tools-for-finding-or-capturing.html">Tools for capturing Tweets</a></li>
+  <li><a href="http://blog.tweetsmarter.com/twitter-search/10-ways-and-20-features-for-searching-old-tweets/">Searching old tweets</a></li>
+  <li><a href="http://locomotivation.squeejee.com/post/158183764/twitterland-all-the-best-twitter-related-apis-in-one-gem">Twitterland gem for Ruby</a></li>
+  <li><a href="http://nlp.stanford.edu/courses/cs224n/2010/reports/drao-sidbatra.pdf">Twitter sentiment analysis</a></li>
+  <li><a href="http://www.ece.stevens-tech.edu/~mouli/twitter.pdf">Twitter analytics</a></li>
+  <li><a href="http://socialmediatoday.com/eric-goldstein/295232/most-complete-twitter-application-list-available-2011-edition">Complete twitter app list</a></li>
+  <li><a href="http://hashtagify.me">hashtagify.me</a></li>
+  <li><a href="http://twitter.github.com/bootstrap/">Twitter bootstrap</a></li>
+  <li><a href="http://sinatra-book.gittr.com">Sinatra book</a></li>
+  <li><a href="http://engineering.twitter.com">Twitter engineering blog</a></li>
+</ul>
+<p>Other Twitter search engines</p>
+<ul>
+  <li><a href="http://tawlk.com">Tawlk</a></li>
+  <li><a href="http://www.twitterment.com">Twitterment</a></li>
+  <li><a href="http://www.twazzup.com">Twazzup</a></li>
+  <li><a href="http://www.twitscoop.com/">Twitscoop</a></li>
+  <li><a href="http://topsy.com">Topsy</a></li>
+</ul>
+
+<h1>3. Background</h1>
+<h2>3.1 Reasons to Search Twitter</h2>
+<p>I conducted a survey with 17 participants in attempt to find out why exactly current users search Twitter. I asked each participant to state how often they use Twitter search and then to select the most relevant reason for searching Twitter at this frequency. There is potential for the survey to be skewed as the participants were all in the 18-25 age range and technically savvy. However the intention was to provide results that may be somewhat better than a personal guess.</p>
+<p>The results are presented in the following graph:</p>
+<img src="images/survey.jpg">
+
+<p>There are various benefits of social media search, such as trust and personal interaction, low latency and access to niche information that rarely surfaces through web searches.</p>
+
+<p>Social media search queries often represent broad or vague information needs, and thus call for a more browsing-oriented interface than web search, which is optimized for highly specific needs.</p>
+
+<h2>3.2 The Current Search Model</h2>
+<p>The problem with the current interface is that it inherits from traditional search engines such as <a href="http://google.com">Google</a> and is optimized for showing the most recent results. The small size of a tweet makes it incredibly difficult to estimate the relevance, which would normally be relatively straight-forward with traditional ranking algorithms. The interface does not favour towards metadata such as location, original tweets/re-tweets, documents within tweets, sentiment analysis or exploration of results.</p>
+<p>The following is a snapshot of the results for the hashtag 'programming', which clearly validates these problems as the top results don't seem to be very useful (07/12/11):</p>
+<a href="images/existingresults.png">
+  <img width="500" src="images/existingresults.png"></img>
+</a>
+
+<h1>4. The Approach</h1>
+
+<h1>5. Implementation</h1>
+<h2>5.1 Initial Prototype</h2>
+<p>Update this</p>
+
+<h1>6. Evaluation</h1>
+
+<h1>7. Conclusion</h1>
+
+<h1>References</h1>
