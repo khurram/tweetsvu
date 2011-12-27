@@ -18,10 +18,9 @@
           <li><a href="/report">Report</a></li>
         </ul>
         
-        <form action="" class="pull-right">
-          <input class="input-small" type="text" placeholder="Username">
-          <input class="input-small" type="password" placeholder="Password">
-          <button class="btn" type="submit">Sign in</button>
+        <form class="pull-right" action="/search" method="get">
+          <input type="text" name="q" class="input" placeholder="#hashtag"/>
+          <button type="submit" class="btn">Search</button>
         </form>
       </div> <!-- end of .container -->
     </div> <!-- end of .fill -->
@@ -29,11 +28,13 @@
   
   <div class="container">
     <div class="content">
-        {% block body %}{% endblock %}
+      {% block body %}{% endblock %}
       
+      {% block footer %}
       <footer>
         <p>This project is being developed by <a href="mailto:khurram@aslam.me">Khurram Aslam</a> under supervision of <a href="http://homepages.inf.ed.ac.uk/ewan/">Ewan Klein</a> at the<br /> University of Edinburgh</p>
       </footer>
+      {% endblock %}
     </div> <!-- end of .content -->
   </div> <!-- end of .container -->
 </body>

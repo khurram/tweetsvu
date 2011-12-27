@@ -1,3 +1,12 @@
-Flask
-twitter-text-py
-twython
+Flask==0.8
+Jinja2==2.6
+PyYAML==3.10
+Werkzeug==0.8.2
+distribute==0.6.24
+nltk==2.0.1rc2-git
+requests==0.8.7
+twitter==1.7.2
+twitter-text-py==1.0.3
+virtualenv==1.6.4
+virtualenvwrapper==2.10.1
+wsgiref==0.1.2

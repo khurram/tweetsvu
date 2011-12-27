@@ -1,21 +1,99 @@
 {% extends "layout.html" %}
 {% block body %}
-<form id="queryform" action="/search" method="get">
-    <input type="text" name="q" required="required" class="span8" placeholder="#hashtag"/>
-    <input type="submit" class="btn primary" value="Search"/>
-</form>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  google.load('visualization', '1.0', {'packages':['corechart']});
+  google.setOnLoadCallback(drawChart);
 
+  function drawChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'hashtag');
+    data.addColumn('number', 'Frequency');
+    data.addRows([
+      {% for hashtag in tagcount[:20]: %}
+      ['{{ "#" + hashtag[0] }}', {{ hashtag[1] }}],
+      {% endfor %}
+    ]);
+
+    var options = {
+      width: 740, height: 800, fontSize: 16, 
+      chartArea:{left: 120, top: 0, width: "100%", height: "100%"}
+    };
+
+    var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+
+    google.visualization.events.addListener(chart, 'select', selectHandler)
+
+    function selectHandler(e) {
+      query = data.getValue(chart.getSelection()[0].row, 0).slice(1);
+      window.location.replace("/search?q=%23" + query);
+    }
+  }
+  
+  google.load('visualization', '1.0', {'packages':['gauge']});
+  google.setOnLoadCallback(drawGauge);
+  
+  function drawGauge() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Label');
+    data.addColumn('number', 'Value');
+    data.addRows([
+      ['Sentiment', {{sentiment}}]
+    ]);
+
+    var options = {
+      width: 200, height: 200, redFrom: 0, redTo: 40, minorTicks: 5,
+      yellowFrom: 40, yellowTo: 60, greenFrom: 60, greenTo: 100
+    };
+
+    var chart = new google.visualization.Gauge(document.getElementById('gauge_div'));
+    chart.draw(data, options);
+  }
+
+  google.setOnLoadCallback(drawArea);
+
+  function drawArea() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Date');
+    data.addColumn('number', 'Sentiment');
+    data.addRows([
+      {% for tweet in tweets: %}
+      ['{{ tweet['created_at'] }}', {{ get_sentiment(tweet['text']) }}],
+      {% endfor %}
+    ]);
+
+    var options = {
+      width: 740, height: 500,
+      title: 'Tweet Activity', isStacked: true,
+      vAxis: {title: 'Year',  titleTextStyle: {color: 'red'}}
+    };
+
+    var chart = new google.visualization.AreaChart(document.getElementById('area_div'));
+      chart.draw(data, options);
+    }  
+</script>
+
+{% print len(tweets) %}
+
+<div id="gauge_div"></div>
+<div id="area_div"></div>
+<div id="chart_div"></div>
+
+<!--{% for tweet in tweets: %}
 <div id="results">
-    {% for tweet in results["results"]: %}
-    <div class="row">
-        <div class="span2" class="thumbnail">
-            <img src='{% print tweet["profile_image_url"] %}'>
-        </div>
-        
-        <div class="span10">
-            <p>{% print "@"+tweet["from_user"] %}<br />{% print Autolink(tweet["text"]).text %}</p>
-        </div>
+  <div class="row">
+    <div class="span2" class="thumbnail">
+      <a href="{% print tweet['profile_image_url'] %}">
+        <img src="{% print tweet['profile_image_url'] %}">
+      </a>
+      <br />{% print tweet['from_user'] %}
     </div>
-    {% endfor %}
-</div>
+
+    <div class="span10">
+      <p>{% print tweet['text'] %}</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>-->
 {% endblock %}
