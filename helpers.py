@@ -1,6 +1,16 @@
+import json
 import requests
+from twitter import *
 from twitter_text import Extractor
 from operator import itemgetter
+
+twitter = Twitter()
+
+def get_tweets(query):
+    tweets = []
+    for page in range(1, 2):
+        tweets += twitter.search(q=query, rpp=100, page=page)['results']
+    return tweets
 
 def count_tags(tweets):
     tagcount = {}
@@ -14,40 +24,17 @@ def count_tags(tweets):
     tagcount = sorted(tagcount.items(), key=itemgetter(1), reverse=True)
     return tagcount
 
-def aggregate_sentiment(tweets):
-    number_of_tweets = len(tweets)
-    payload = ''
-    
-    for tweet in tweets:
-        payload += tweet['text'] + '\n'
-
-    url = 'http://twittersentiment.appspot.com/api/bulkClassify'
-    payload = payload.encode('utf8', 'xmlcharrefreplace')
-    headers = {'content-type': 'text/plain; charset=utf-8'}
-    r = requests.post(url, data=payload, headers=headers)
+def get_sentiment(tweets):
+    url = 'http://twittersentiment.appspot.com/api/bulkClassifyJson'
+    payload = {'data': tweets}
+    headers = {'content-type': 'application/json'}
+    r = requests.post(url, data=json.dumps(payload), headers=headers)
 
     if r.status_code == requests.codes.ok:
-        posts = r.content.split('\n')
+        sent_tweets = json.loads(r.content)['data']
         sentiment_total = 0
-        for post in posts:
-            if not post == '':
-                sentiment = int(post.split(',')[0].strip('"'))
-                sentiment_total += sentiment
-    else:
-        print "Couldn't successfully access the sentiment API"
+        for sent_tweet in sent_tweets:
+            sentiment_total += sent_tweet['polarity']
         
-    avg_sentiment = (float(sentiment_total) / number_of_tweets) * 25
-    return int(avg_sentiment)
-
-def get_sentiment(tweet):
-    url = 'http://twittersentiment.appspot.com/api/bulkClassify'
-    payload = tweet.encode('utf8', 'xmlcharrefreplace')
-    headers = {'content-type': 'text/plain; charset=utf-8'}
-    r = requests.post(url, data=payload, headers=headers)
-    
-    if r.status_code == requests.codes.ok:
-        posts = r.content.split('\n')
-        for post in posts:
-            if not post == '':
-                sentiment = int(post.split(',')[0].strip('"'))
-    return sentiment * 25.0
+    sentiment = int((float(sentiment_total) / len(tweets)) * 25)
+    return sentiment, sent_tweets

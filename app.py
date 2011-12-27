@@ -1,6 +1,5 @@
 import os
 from helpers import *
-from twitter import *
 from flask import Flask, request, render_template
 
 app = Flask(__name__)
@@ -17,13 +16,11 @@ def report():
 @app.route('/search')
 def search():
     query = request.args.get('q')
-    tweets = []
-    for page in range(1, 2):
-        tweets += twitter.search(q=query, rpp=100, page=page)['results']
+    tweets = get_tweets(query)
     tagcount = count_tags(tweets)
-    sentiment = aggregate_sentiment(tweets)
-    return render_template('search.html', tweets=tweets, tagcount=tagcount, 
-                    sentiment=sentiment, len=len, get_sentiment=get_sentiment)
+    sentiment, sent_tweets = get_sentiment(tweets)
+    return render_template('search.html', tweets=sent_tweets, 
+                            tagcount=tagcount, sentiment=sentiment, len=len)
 
 @app.route('/chart')
 def chart():

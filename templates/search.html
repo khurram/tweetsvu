@@ -59,7 +59,7 @@
     data.addColumn('number', 'Sentiment');
     data.addRows([
       {% for tweet in tweets: %}
-      ['{{ tweet['created_at'] }}', {{ get_sentiment(tweet['text']) }}],
+      ['{{ tweet['created_at'] }}', {{ tweet['polarity'] }}],
       {% endfor %}
     ]);
 
@@ -80,7 +80,7 @@
 <div id="area_div"></div>
 <div id="chart_div"></div>
 
-<!--{% for tweet in tweets: %}
+{% for tweet in tweets: %}
 <div id="results">
   <div class="row">
     <div class="span2" class="thumbnail">
@@ -95,5 +95,5 @@
     </div>
   </div>
   {% endfor %}
-</div>-->
+</div>
 {% endblock %}
