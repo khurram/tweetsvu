@@ -39,7 +39,7 @@
     data.addColumn('string', 'Label');
     data.addColumn('number', 'Value');
     data.addRows([
-      ['Sentiment', {{sentiment}}]
+      ['Sentiment', {{ sentiment }}]
     ]);
 
     var options = {
@@ -66,7 +66,7 @@
     var options = {
       width: 740, height: 500,
       title: 'Tweet Activity', isStacked: true,
-      vAxis: {title: 'Year',  titleTextStyle: {color: 'red'}}
+      vAxis: {title: 'Negative <--> Positive',  titleTextStyle: {color: 'red'}}
     };
 
     var chart = new google.visualization.AreaChart(document.getElementById('area_div'));
@@ -74,7 +74,7 @@
     }  
 </script>
 
-{% print len(tweets) %}
+{% print len(tweets), "tweets" %}
 
 <div id="gauge_div"></div>
 <div id="area_div"></div>
@@ -83,15 +83,20 @@
 {% for tweet in tweets: %}
 <div id="results">
   <div class="row">
-    <div class="span2" class="thumbnail">
+    <div class="span2">
       <a href="{% print tweet['profile_image_url'] %}">
-        <img src="{% print tweet['profile_image_url'] %}">
+        <img class="thumbnail" src="{% print tweet['profile_image_url'] %}">
       </a>
-      <br />{% print tweet['from_user'] %}
     </div>
 
     <div class="span10">
-      <p>{% print tweet['text'] %}</p>
+      <h3>{% print tweet['from_user_name'] %}
+        <small>{% print "@", tweet['from_user'] %}</small></h3>
+    </div>
+    <div class="span10">
+      <p class="{% if tweet['polarity'] == 4: %}alert-message block-message success
+      {% elif tweet['polarity'] == 0: %}alert-message block-message error
+      {% else: %}alert-message block-message info{% endif %}">{% print tweet['text'] %}</p>
     </div>
   </div>
   {% endfor %}

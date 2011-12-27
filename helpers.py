@@ -36,5 +36,5 @@ def get_sentiment(tweets):
         for sent_tweet in sent_tweets:
             sentiment_total += sent_tweet['polarity']
         
-    sentiment = int((float(sentiment_total) / len(tweets)) * 25)
+    sentiment = (float(sentiment_total) / len(tweets)) * 25
     return sentiment, sent_tweets

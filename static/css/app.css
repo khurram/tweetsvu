@@ -75,6 +75,18 @@ p {
   margin: 0;
 }
 
+#results .row p.positive {
+  border: 1px solid green;
+}
+
+#results .row p.negative {
+  border: 1px solid red;
+}
+
+#results .row p.neutral {
+  border: 1px solid #ccc;
+}
+
 footer {
   clear: both;
   border-top: 1px solid #ddd;

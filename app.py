@@ -3,7 +3,6 @@ from helpers import *
 from flask import Flask, request, render_template
 
 app = Flask(__name__)
-twitter = Twitter()
 
 @app.route("/")
 def index():
