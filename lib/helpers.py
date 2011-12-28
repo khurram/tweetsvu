@@ -8,7 +8,7 @@ twitter = Twitter()
 
 def get_tweets(query):
     tweets = []
-    for page in range(1, 2):
+    for page in range(1, 6):
         tweets += twitter.search(q=query, rpp=100, page=page)['results']
     return tweets
 
