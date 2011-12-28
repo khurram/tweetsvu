@@ -59,7 +59,7 @@
     data.addColumn('number', 'Sentiment');
     data.addRows([
       {% for tweet in tweets: %}
-      ['{{ tweet['created_at'] }}', {{ tweet['polarity'] }}],
+      ['{{ tweet['created_at']|time_since }}', {{ tweet['polarity'] }}],
       {% endfor %}
     ]);
 
@@ -74,7 +74,7 @@
     }  
 </script>
 
-{% print len(tweets), "tweets" %}
+{{ tweets|length  }}
 
 <div id="gauge_div"></div>
 <div id="area_div"></div>
@@ -83,20 +83,19 @@
 {% for tweet in tweets: %}
 <div id="results">
   <div class="row">
-    <div class="span2">
-      <a href="{% print tweet['profile_image_url'] %}">
-        <img class="thumbnail" src="{% print tweet['profile_image_url'] %}">
+    <div class="span2 media-grid">
+      <a href="{{ tweet['profile_image_url'] }}">
+        <img src="{{ tweet['profile_image_url'] }}" width="73" class="thumbnail">
       </a>
     </div>
 
     <div class="span10">
-      <h3>{% print tweet['from_user_name'] %}
-        <small>{% print "@", tweet['from_user'] %}</small></h3>
-    </div>
-    <div class="span10">
-      <p class="{% if tweet['polarity'] == 4: %}alert-message block-message success
-      {% elif tweet['polarity'] == 0: %}alert-message block-message error
-      {% else: %}alert-message block-message info{% endif %}">{% print tweet['text'] %}</p>
+      <h3>
+        {{ tweet['from_user_name'] }}
+        <small>{{ "@" + tweet['from_user'] }}</small>
+        <span class="timesince">{{ tweet['created_at']|time_since }}</span>
+      </h3>
+      <p class="{{ tweet|sentiment_highlight }}">{{ tweet['text']|autolink|safe }}</p>
     </div>
   </div>
   {% endfor %}

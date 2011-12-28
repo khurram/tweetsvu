@@ -8,7 +8,7 @@ twitter = Twitter()
 
 def get_tweets(query):
     tweets = []
-    for page in range(1, 2):
+    for page in range(1, 6):
         tweets += twitter.search(q=query, rpp=100, page=page)['results']
     return tweets
 
@@ -35,6 +35,8 @@ def get_sentiment(tweets):
         sentiment_total = 0
         for sent_tweet in sent_tweets:
             sentiment_total += sent_tweet['polarity']
+            sent_tweet['profile_image_url'] = sent_tweet['profile_image_url'].\
+                                                    replace('normal', 'bigger')
         
     sentiment = (float(sentiment_total) / len(tweets)) * 25
     return sentiment, sent_tweets
