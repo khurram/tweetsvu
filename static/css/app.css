@@ -81,9 +81,17 @@ p {
   padding-bottom: 10px;
 }
 
-#results .row h3 .timesince{
+#results .row h3 .timesince {
   float: right;
   font-size: 16px;
+}
+
+#gauge_div {
+  float: left;
+}
+
+#area_div {
+  float: left;
 }
 
 footer {

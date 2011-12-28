@@ -64,9 +64,10 @@
     ]);
 
     var options = {
-      width: 740, height: 500,
+      width: 540, height: 300,
       title: 'Tweet Activity', isStacked: true,
-      vAxis: {title: 'Negative <--> Positive',  titleTextStyle: {color: 'red'}}
+      vAxis: {title: 'Negative <--> Positive',  titleTextStyle: {color: 'red'}},
+      chartArea:{left: 80, top: 10, width: "100%", height: "75%"}
     };
 
     var chart = new google.visualization.AreaChart(document.getElementById('area_div'));
@@ -74,7 +75,7 @@
     }  
 </script>
 
-{{ tweets|length  }}
+{% print tweets|length, " sample tweets"  %}
 
 <div id="gauge_div"></div>
 <div id="area_div"></div>
