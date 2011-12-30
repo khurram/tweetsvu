@@ -7,21 +7,10 @@ from twitter_text import Autolink
 app = Flask(__name__)
 
 @app.template_filter()
-def time_since(tweet_time):
-    past="ago"
-    future="from now"
-    default="just now"
-    
+def time_since(tweet_time, default="just now"):
     tweet_time = datetime.strptime(tweet_time, '%a, %d %b %Y %H:%M:%S +0000')
     now = datetime.utcnow()
-    
-    if now > tweet_time:
-        diff = now - tweet_time
-        tweet_is_past = True
-    else:
-        diff = tweet_time - now
-        tweet_is_past = False
-
+    diff = now - tweet_time
     periods = (
         (diff.days / 365, "year", "years"),
         (diff.days / 30, "month", "months"),
@@ -34,8 +23,7 @@ def time_since(tweet_time):
 
     for period, singular, plural in periods:
         if period:
-            return "%d %s %s" % (period, singular if period == 1 else plural, \
-                                 past if tweet_is_past else future)
+            return "%d %s ago" % (period, singular if period == 1 else plural)
     return default
 
 @app.template_filter()
@@ -44,8 +32,10 @@ def sentiment_highlight(tweet):
         return 'alert-message block-message success'
     elif tweet['polarity'] == 0:
         return 'alert-message block-message error'
-    else:
+    elif tweet['polarity'] == 2:
         return 'alert-message block-message info'
+    else:
+        return 'alert-message block-message warning'
 
 @app.template_filter()
 def autolink(tweet_text):
@@ -63,10 +53,14 @@ def report():
 def search():
     query = request.args.get('q')
     tweets = get_tweets(query)
-    tagcount = count_tags(tweets)
-    sentiment, sent_tweets = get_sentiment(tweets)
-    return render_template('search.html', tweets=sent_tweets, 
-                            tagcount=tagcount, sentiment=sentiment)
+    tweets = add_sentiment(tweets)
+    tag_count = count_tags(tweets)
+    user_count = count_users(tweets)
+    url_count = count_urls(tweets)
+    sentiment = get_sentiment(tweets)
+    return render_template('search.html', tweets=tweets, tag_count=tag_count, 
+                            user_count=user_count, url_count=url_count, 
+                            sentiment=sentiment)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

@@ -66,6 +66,10 @@ p {
   font-size: 22px;
 }
 
+#results {
+  float: left;
+}
+
 #results .row {
   border-top: 1px solid #ddd;
   padding: 20px 0;
@@ -86,12 +90,16 @@ p {
   font-size: 16px;
 }
 
-#gauge_div {
+.hidden {
+  display: none;
+}
+
+#tag_count, #user_count, #url_count, #sentiment, #sentiment_graph {
   float: left;
 }
 
-#area_div {
-  float: left;
+#tag_count, #user_count {
+  padding-right: 10px;
 }
 
 footer {

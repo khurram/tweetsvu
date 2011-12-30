@@ -3,24 +3,30 @@
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
   google.load('visualization', '1.0', {'packages':['corechart']});
-  google.setOnLoadCallback(drawChart);
+  google.load('visualization', '1.0', {'packages':['gauge']});
+  
+  google.setOnLoadCallback(drawTagChart);
+  google.setOnLoadCallback(drawUserChart);
+  google.setOnLoadCallback(drawUrlChart);
+  google.setOnLoadCallback(drawPie);
+  /*google.setOnLoadCallback(drawArea);*/
 
-  function drawChart() {
+  function drawTagChart() {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'hashtag');
     data.addColumn('number', 'Frequency');
     data.addRows([
-      {% for hashtag in tagcount[:20]: %}
-      ['{{ "#" + hashtag[0] }}', {{ hashtag[1] }}],
+      {% for tag in tag_count[:10]: %}
+      ['{{ "#" + tag[0] }}', {{ tag[1] }}],
       {% endfor %}
     ]);
 
     var options = {
-      width: 740, height: 800, fontSize: 16, 
-      chartArea:{left: 120, top: 0, width: "100%", height: "100%"}
+      width: 240, height: 200, fontSize: 12, title: "Top Tags",
+      chartArea:{left: 40, top: 20, width: "100%", height: "90%"}
     };
 
-    var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+    var chart = new google.visualization.BarChart(document.getElementById('tag_count'));
     chart.draw(data, options);
 
     google.visualization.events.addListener(chart, 'select', selectHandler)
@@ -31,27 +37,84 @@
     }
   }
   
-  google.load('visualization', '1.0', {'packages':['gauge']});
-  google.setOnLoadCallback(drawGauge);
-  
-  function drawGauge() {
+  function drawUserChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'hashtag');
+    data.addColumn('number', 'Frequency');
+    data.addRows([
+      {% for user in user_count[:10]: %}
+      ['{{ "#" + user[0] }}', {{ user[1] }}],
+      {% endfor %}
+    ]);
+
+    var options = {
+      width: 240, height: 200, fontSize: 12, title: "Top Users",
+      chartArea:{left: 40, top: 20, width: "100%", height: "90%"}
+    };
+
+    var chart = new google.visualization.BarChart(document.getElementById('user_count'));
+    chart.draw(data, options);
+  }
+
+  function drawUrlChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'hashtag');
+    data.addColumn('number', 'Frequency');
+    data.addRows([
+      {% for url in url_count[:10]: %}
+      ['{{ "#" + url[0] }}', {{ url[1] }}],
+      {% endfor %}
+    ]);
+
+    var options = {
+      width: 240, height: 200, fontSize: 12, title: "Top Urls",
+      chartArea:{left: 40, top: 20, width: "100%", height: "90%"}
+    };
+
+    var chart = new google.visualization.BarChart(document.getElementById('url_count'));
+    chart.draw(data, options);
+  }
+
+  function drawPie() {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Label');
     data.addColumn('number', 'Value');
     data.addRows([
-      ['Sentiment', {{ sentiment }}]
+      ['Positive', {{ sentiment['positive'] }}],
+      ['Negative', {{ sentiment['negative'] }}],
+      ['Neutral', {{ sentiment['neutral'] }}]
     ]);
 
     var options = {
-      width: 200, height: 200, redFrom: 0, redTo: 40, minorTicks: 5,
-      yellowFrom: 40, yellowTo: 60, greenFrom: 60, greenTo: 100
+      width: 300, height: 250, fontSize: 12, title: 'Sentiment',
+      chartArea:{left: 0, top: 40, width: "100%", height: "80%"}
     };
 
-    var chart = new google.visualization.Gauge(document.getElementById('gauge_div'));
+    var chart = new google.visualization.PieChart(document.getElementById('sentiment'));
     chart.draw(data, options);
-  }
 
-  google.setOnLoadCallback(drawArea);
+    google.visualization.events.addListener(chart, 'select', selectHandler)
+
+    function selectHandler(e) {
+      sentiment = data.getValue(chart.getSelection()[0].row, 0);
+      if (sentiment == 'Positive') {
+        sentiment = 'success';
+      } else if (sentiment == 'Negative') {
+        sentiment = 'error';
+      } else if (sentiment == 'Neutral') {
+        sentiment = 'info';
+      }
+      
+      rows = document.getElementById('results').getElementsByTagName('p');
+      for (var i = 0; i < rows.length; i++) {
+        rows[i].parentNode.parentNode.className = 'row';
+        if (rows[i].className != 'alert-message block-message ' + sentiment) {
+          rows[i].parentNode.parentNode.className += ' hidden';
+        }
+      }
+    }
+    
+  }
 
   function drawArea() {
     var data = new google.visualization.DataTable();
@@ -64,29 +127,31 @@
     ]);
 
     var options = {
-      width: 540, height: 300,
+      width: 540, height: 200,
       title: 'Tweet Activity', isStacked: true,
       vAxis: {title: 'Negative <--> Positive',  titleTextStyle: {color: 'red'}},
       chartArea:{left: 80, top: 10, width: "100%", height: "75%"}
     };
 
-    var chart = new google.visualization.AreaChart(document.getElementById('area_div'));
+    var chart = new google.visualization.AreaChart(document.getElementById('sentiment_graph'));
       chart.draw(data, options);
     }  
 </script>
 
+<div id="tag_count"></div>
+<div id="user_count"></div>
+<div id="url_count"></div>
+<div id="sentiment"></div>
+<!--<div id="sentiment_graph"></div>-->
+
 {% print tweets|length, " sample tweets"  %}
 
-<div id="gauge_div"></div>
-<div id="area_div"></div>
-<div id="chart_div"></div>
-
-{% for tweet in tweets: %}
 <div id="results">
+{% for tweet in tweets: %}
   <div class="row">
     <div class="span2 media-grid">
-      <a href="{{ tweet['profile_image_url'] }}">
-        <img src="{{ tweet['profile_image_url'] }}" width="73" class="thumbnail">
+      <a href="{{ tweet['profile_image_url']|replace('normal', 'bigger') }}">
+        <img src="{{ tweet['profile_image_url']|replace('normal', 'bigger') }}" width="73" class="thumbnail">
       </a>
     </div>
 
