@@ -2,7 +2,7 @@ import os
 from flask import Flask, request, render_template
 from datetime import datetime
 from twitter_text import Autolink
-from lib.helpers import get_tweets, add_sentiment, count_tags, count_users,
+from lib.helpers import get_tweets, add_sentiment, count_tags, count_users, \
                         count_tags, get_sentiment
 
 app = Flask(__name__)
