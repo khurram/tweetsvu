@@ -1,5 +1,5 @@
 import os
-from lib.helpers import *
+from helpers import *
 from flask import Flask, request, render_template
 from datetime import datetime
 from twitter_text import Autolink
