@@ -53,7 +53,6 @@ def report():
 def search():
     query = request.args.get('q')
     tweets = get_tweets(query)
-    tweets = add_sentiment(tweets)
     tag_count = count_tags(tweets)
     user_count = count_users(tweets)
     url_count = count_urls(tweets)

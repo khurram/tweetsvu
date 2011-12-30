@@ -9,6 +9,7 @@ def get_tweets(query):
     twitter = Twitter()
     for page in range(1, 6):
         tweets += twitter.search(q=query, rpp=100, page=page)['results']
+    tweets = add_sentiment(tweets)
     return tweets
 
 def add_sentiment(tweets):
