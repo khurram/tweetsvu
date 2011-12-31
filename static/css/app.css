@@ -94,7 +94,7 @@ p {
   display: none;
 }
 
-#tag_count, #user_count, #url_count, #sentiment, #sentiment_graph {
+#tag_count, #user_count, #url_count, #sentiment, #activity_graph {
   float: left;
 }
 

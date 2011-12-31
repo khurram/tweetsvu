@@ -56,9 +56,10 @@ def get_activity(tweets):
                     period = 1
                     singular = 'hour'
                 key = str(period) + ' ' + singular
-                activity_count[key] = activity_count.get(key, 0) + 1
-                break;
-    activity_count = sorted(activity_count.items(), key=activity_count.get)
+                if singular == 'hour':
+                    activity_count[key] = activity_count.get(key, 0) + 1
+                    break;
+    activity_count = sorted(activity_count.items(), key=lambda x: x[0], reverse=True)
     return activity_count
 
 def count_tags(tweets):
