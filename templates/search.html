@@ -9,7 +9,7 @@
   google.setOnLoadCallback(drawUserChart);
   google.setOnLoadCallback(drawUrlChart);
   google.setOnLoadCallback(drawPie);
-  /*google.setOnLoadCallback(drawArea);*/
+  google.setOnLoadCallback(drawLine);
 
   function drawTagChart() {
     var data = new google.visualization.DataTable();
@@ -17,13 +17,13 @@
     data.addColumn('number', 'Frequency');
     data.addRows([
       {% for tag in tag_count[:10]: %}
-      ['{{ "#" + tag[0] }}', {{ tag[1] }}],
+      ['{{ '#' + tag[0] }}', {{ tag[1] }}],
       {% endfor %}
     ]);
 
     var options = {
-      width: 240, height: 200, fontSize: 12, title: "Top Tags",
-      chartArea:{left: 40, top: 20, width: "100%", height: "90%"}
+      width: 240, height: 200, fontSize: 12, title: 'Top Tags',
+      chartArea:{left: 40, top: 20, width: '100%', height: '90%'}
     };
 
     var chart = new google.visualization.BarChart(document.getElementById('tag_count'));
@@ -33,7 +33,7 @@
 
     function selectHandler(e) {
       query = data.getValue(chart.getSelection()[0].row, 0).slice(1);
-      window.location.replace("/search?q=%23" + query);
+      window.location.replace('/search?q=%23' + query);
     }
   }
   
@@ -43,13 +43,13 @@
     data.addColumn('number', 'Frequency');
     data.addRows([
       {% for user in user_count[:10]: %}
-      ['{{ "#" + user[0] }}', {{ user[1] }}],
+      ['{{ '@' + user[0] }}', {{ user[1] }}],
       {% endfor %}
     ]);
 
     var options = {
-      width: 240, height: 200, fontSize: 12, title: "Top Users",
-      chartArea:{left: 40, top: 20, width: "100%", height: "90%"}
+      width: 240, height: 200, fontSize: 12, title: 'Top Users',
+      chartArea:{left: 40, top: 20, width: '100%', height: '90%'}
     };
 
     var chart = new google.visualization.BarChart(document.getElementById('user_count'));
@@ -62,13 +62,13 @@
     data.addColumn('number', 'Frequency');
     data.addRows([
       {% for url in url_count[:10]: %}
-      ['{{ "#" + url[0] }}', {{ url[1] }}],
+      ['{{ url[0] }}', {{ url[1] }}],
       {% endfor %}
     ]);
 
     var options = {
-      width: 240, height: 200, fontSize: 12, title: "Top Urls",
-      chartArea:{left: 40, top: 20, width: "100%", height: "90%"}
+      width: 240, height: 200, fontSize: 12, title: 'Top Urls',
+      chartArea:{left: 40, top: 20, width: '100%', height: '90%'}
     };
 
     var chart = new google.visualization.BarChart(document.getElementById('url_count'));
@@ -87,7 +87,8 @@
 
     var options = {
       width: 300, height: 250, fontSize: 12, title: 'Sentiment',
-      chartArea:{left: 0, top: 40, width: "100%", height: "80%"}
+      chartArea:{left: 10, top: 40, width: '100%', height: '80%'},
+      colors: ['#00CC00', '#E8110F', '#36C']
     };
 
     var chart = new google.visualization.PieChart(document.getElementById('sentiment'));
@@ -116,24 +117,23 @@
     
   }
 
-  function drawArea() {
+  function drawLine() {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Date');
     data.addColumn('number', 'Sentiment');
     data.addRows([
-      {% for tweet in tweets: %}
-      ['{{ tweet['created_at']|time_since }}', {{ tweet['polarity'] }}],
+      {% for time in activity_count[:5]: %}
+      ['{{ time[0] }}', {{ time[1] }}],
       {% endfor %}
     ]);
 
     var options = {
-      width: 540, height: 200,
-      title: 'Tweet Activity', isStacked: true,
-      vAxis: {title: 'Negative <--> Positive',  titleTextStyle: {color: 'red'}},
-      chartArea:{left: 80, top: 10, width: "100%", height: "75%"}
+      width: 440, height: 300,
+      title: 'Activity',
+      chartArea:{left: 60, top: 40, width: "90%", height: "70%"}
     };
 
-    var chart = new google.visualization.AreaChart(document.getElementById('sentiment_graph'));
+    var chart = new google.visualization.LineChart(document.getElementById('sentiment_graph'));
       chart.draw(data, options);
     }  
 </script>
@@ -142,7 +142,7 @@
 <div id="user_count"></div>
 <div id="url_count"></div>
 <div id="sentiment"></div>
-<!--<div id="sentiment_graph"></div>-->
+<div id="sentiment_graph"></div>
 
 {% print tweets|length, " sample tweets"  %}
 
