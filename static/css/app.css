@@ -9,6 +9,16 @@ p {
   line-height: 1.4;
 }
 
+li {
+  color: #404040;
+  line-height: 1.4;
+}
+
+img {
+  display: block;
+  margin: 0 auto;
+}
+
 .topbar .fill {
   font: 13px "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-image: url('../images/headerbg.png');
@@ -35,21 +45,13 @@ p {
 .container .content {
   background-color: white;
   padding: 40px 60px;
-  margin: 20px -20px;
+  margin: 20px -60px;
   -webkit-border-radius: 5px;
      -moz-border-radius: 5px;
           border-radius: 5px;
   -webkit-box-shadow: 0 5px 15px rgba(0,0,0,.2);
      -moz-box-shadow: 0 5px 15px rgba(0,0,0,.2);
           box-shadow: 0 5px 15px rgba(0,0,0,.2);  
-}
-
-#status {
-  background: #ffff99;
-  margin-bottom: 40px;
-  padding: 10px;
-  font-family: sans-serif;
-  text-align: center;
 }
 
 #queryform {
@@ -70,10 +72,8 @@ p {
   float: left;
 }
 
-#results .row {
-  border-top: 1px solid #ddd;
-  padding: 20px 0;
-  margin: 0;
+#results hr {
+  border-bottom: 1px solid #ddd;
 }
 
 #results .row p {
@@ -100,7 +100,27 @@ p {
 }
 
 #tag_count, #user_count {
-  padding-right: 10px;
+  padding-right: 5px;
+}
+
+#title_page {
+  margin-bottom: 40px;
+}
+
+#title_page h1, #title_page h2, #title_page h3 {
+  text-align: center;
+  font-weight: normal;
+}
+
+#title_page h1 {
+  font-size: 40px;
+  line-height: 1.2;
+  margin: 60px auto;
+  width: 500px;
+}
+
+#title_page h2 {
+  margin: 40px 0 40px 0;
 }
 
 footer {

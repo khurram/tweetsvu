@@ -22,8 +22,8 @@
     ]);
 
     var options = {
-      width: 240, height: 200, fontSize: 12, title: 'Top Tags',
-      chartArea:{left: 40, top: 20, width: '100%', height: '90%'}
+      width: 270, height: 200, fontSize: 12, title: 'Top Tags',
+      chartArea:{left: 60, top: 20, width: '100%', height: '90%'}
     };
 
     var chart = new google.visualization.BarChart(document.getElementById('tag_count'));
@@ -48,8 +48,8 @@
     ]);
 
     var options = {
-      width: 240, height: 200, fontSize: 12, title: 'Top Users',
-      chartArea:{left: 40, top: 20, width: '100%', height: '90%'}
+      width: 270, height: 200, fontSize: 12, title: 'Top Users',
+      chartArea:{left: 60, top: 20, width: '100%', height: '90%'}
     };
 
     var chart = new google.visualization.BarChart(document.getElementById('user_count'));
@@ -67,8 +67,8 @@
     ]);
 
     var options = {
-      width: 240, height: 200, fontSize: 12, title: 'Top Urls',
-      chartArea:{left: 40, top: 20, width: '100%', height: '90%'}
+      width: 270, height: 200, fontSize: 12, title: 'Top Urls',
+      chartArea:{left: 60, top: 20, width: '100%', height: '90%'}
     };
 
     var chart = new google.visualization.BarChart(document.getElementById('url_count'));
@@ -128,7 +128,7 @@
     ]);
 
     var options = {
-      width: 440, height: 300,
+      width: 520, height: 300,
       title: 'Activity',
       chartArea:{left: 60, top: 40, width: "90%", height: "70%"}
     };
@@ -149,13 +149,14 @@
 <div id="results">
 {% for tweet in tweets: %}
   <div class="row">
+    <hr>
     <div class="span2 media-grid">
       <a href="{{ tweet['profile_image_url']|replace('normal', 'bigger') }}">
         <img src="{{ tweet['profile_image_url']|replace('normal', 'bigger') }}" width="73" class="thumbnail">
       </a>
     </div>
 
-    <div class="span10">
+    <div class="span12">
       <h3>
         {{ tweet['from_user_name'] }}
         <small>{{ "@" + tweet['from_user'] }}</small>

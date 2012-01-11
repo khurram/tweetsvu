@@ -1,10 +1,12 @@
 import os
 from helpers import *
-from flask import Flask, request, render_template
 from datetime import datetime
 from twitter_text import Autolink
+from flask import Flask, request, render_template
+from flaskext.markdown import Markdown
 
 app = Flask(__name__)
+Markdown(app)
 
 @app.template_filter()
 def time_since(tweet_time, default="just now"):
