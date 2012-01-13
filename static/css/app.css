@@ -6,15 +6,23 @@ body {
 
 p {
   font-size: 16px;
-  line-height: 1.4;
+  line-height: 26px;
+  margin-bottom: 26px;
 }
 
-li {
+#report p {
+  font-size: 18px;
+  line-height: 29px;
+  margin-bottom: 25px;
+}
+
+#report li {
   color: #404040;
-  line-height: 1.4;
+  font-size: 18px;
+  line-height: 26px;
 }
 
-img {
+#report img {
   display: block;
   margin: 0 auto;
 }
@@ -38,14 +46,12 @@ img {
       box-shadow: inset 0 5px 10px rgba(0, 0, 0, .5);
 }
 
-.container {
-  width: 820px;
-}
-
 .container .content {
+  width: 820px;
   background-color: white;
   padding: 40px 60px;
-  margin: 20px -60px;
+  margin: 20px 0px;
+  float: left;
   -webkit-border-radius: 5px;
      -moz-border-radius: 5px;
           border-radius: 5px;
@@ -74,6 +80,7 @@ img {
 
 #results hr {
   border-bottom: 1px solid #ddd;
+  margin-left: 20px;
 }
 
 #results .row p {
@@ -124,7 +131,8 @@ img {
 }
 
 footer {
-  clear: both;
+  float: left;
+  width: 820px;
   border-top: 1px solid #ddd;
 }
 
