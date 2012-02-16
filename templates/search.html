@@ -116,14 +116,14 @@
     }
     
   }
-
+  
   function drawLine() {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Date');
     data.addColumn('number', 'Tweets');
     data.addRows([
-      {% for time in activity_count[:5]: %}
-      ['{{ time[0] }}', {{ time[1] }}],
+      {% for time in activity_count: %}
+      ['{{ time[0] }} hour ago', {{ time[1] }}],
       {% endfor %}
     ]);
 

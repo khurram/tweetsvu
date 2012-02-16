@@ -65,5 +65,9 @@ def search():
                             user_count=user_count, url_count=url_count, 
                             activity_count=activity_count, sentiment=sentiment)
 
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
 if __name__ == "__main__":
     app.run(debug=True)

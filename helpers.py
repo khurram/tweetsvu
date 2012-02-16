@@ -38,7 +38,8 @@ def get_sentiment(tweets):
 def get_activity(tweets):
     activity_count = {}
     for tweet in tweets:
-        tweet_time = datetime.strptime(tweet['created_at'], '%a, %d %b %Y %H:%M:%S +0000')
+        tweet_time = datetime.strptime(tweet['created_at'], 
+                                        '%a, %d %b %Y %H:%M:%S +0000')
         now = datetime.utcnow()
         diff = now - tweet_time
         periods = (
@@ -55,11 +56,11 @@ def get_activity(tweets):
                 if singular == 'minute' or singular == 'second':
                     period = 1
                     singular = 'hour'
-                key = str(period) + ' ' + singular
+                key = period
                 if singular == 'hour':
                     activity_count[key] = activity_count.get(key, 0) + 1
                     break;
-    activity_count = sorted(activity_count.items(), key=lambda x: x[0], reverse=True)
+    activity_count = sorted(activity_count.items(), key=itemgetter(0), reverse=True)
     return activity_count
 
 def count_tags(tweets):
