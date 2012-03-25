@@ -16,7 +16,7 @@
     data.addColumn('string', 'hashtag');
     data.addColumn('number', 'Frequency');
     data.addRows([
-      {% for tag in tag_count[:10]: %}
+      {% for tag in params['tag_count'][:10]: %}
       ['{{ '#' + tag[0] }}', {{ tag[1] }}],
       {% endfor %}
     ]);
@@ -42,7 +42,7 @@
     data.addColumn('string', 'hashtag');
     data.addColumn('number', 'Frequency');
     data.addRows([
-      {% for user in user_count[:10]: %}
+      {% for user in params['user_count'][:10]: %}
       ['{{ '@' + user[0] }}', {{ user[1] }}],
       {% endfor %}
     ]);
@@ -61,7 +61,7 @@
     data.addColumn('string', 'hashtag');
     data.addColumn('number', 'Frequency');
     data.addRows([
-      {% for url in url_count[:10]: %}
+      {% for url in params['url_count'][:10]: %}
       ['{{ url[0] }}', {{ url[1] }}],
       {% endfor %}
     ]);
@@ -80,9 +80,9 @@
     data.addColumn('string', 'Label');
     data.addColumn('number', 'Value');
     data.addRows([
-      ['Positive', {{ sentiment['positive'] }}],
-      ['Negative', {{ sentiment['negative'] }}],
-      ['Neutral', {{ sentiment['neutral'] }}]
+      ['Positive', {{ params['sentiment']['positive'] }}],
+      ['Negative', {{ params['sentiment']['negative'] }}],
+      ['Neutral', {{ params['sentiment']['neutral'] }}]
     ]);
 
     var options = {
@@ -122,7 +122,7 @@
     data.addColumn('string', 'Date');
     data.addColumn('number', 'Tweets');
     data.addRows([
-      {% for time in activity_count: %}
+      {% for time in params['activity_count']: %}
       ['{{ time[0] }} hour ago', {{ time[1] }}],
       {% endfor %}
     ]);
@@ -144,10 +144,10 @@
 <div id="sentiment"></div>
 <div id="activity_graph"></div>
 
-{% print tweets|length, " sample tweets"  %}
+{% print params['tweets']|length, " sample tweets"  %}
 
 <div id="results">
-{% for tweet in tweets: %}
+{% for tweet in params['tweets']: %}
   <div class="row">
     <hr>
     <div class="span2 media-grid">

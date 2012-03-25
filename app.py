@@ -54,16 +54,7 @@ def report():
 @app.route('/search')
 def search():
     query = request.args.get('q')
-    tweets = get_tweets(query)
-    tweets = add_sentiment(tweets)
-    sentiment = get_sentiment(tweets)
-    tag_count = count_tags(tweets)
-    user_count = count_users(tweets)
-    url_count = count_urls(tweets)
-    activity_count = get_activity(tweets)
-    return render_template('search.html', tweets=tweets, tag_count=tag_count, 
-                            user_count=user_count, url_count=url_count, 
-                            activity_count=activity_count, sentiment=sentiment)
+    return render_template('search.html', params=get_results(query))
 
 @app.route('/test')
 def test():

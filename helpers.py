@@ -1,16 +1,34 @@
 import json
 import requests
+import Queue
 from datetime import datetime
+from threading import Thread
 from twitter import Twitter
 from twitter_text import Extractor
 from operator import itemgetter
 
+def get_page_of_tweets(twitter, query, page, queue):
+    queue.put(twitter.search(q=query, rpp=100, p=page)['results'])
+
 def get_tweets(query):
-    tweets = []
+    pages = 7
+    threads = []
+    results = []
+    queue = Queue.Queue()
     twitter = Twitter()
-    for page in range(1, 6):
-        tweets += twitter.search(q=query, rpp=100, page=page)['results']
-    return tweets
+
+    for page in range(1, pages):
+	t = Thread(target=get_page_of_tweets, args=(twitter, query, page, queue))
+	threads.append(t)
+	t.start()
+
+    for thread in threads:
+        thread.join()
+
+    for thread in threads:
+	results += queue.get()
+
+    return results
 
 def add_sentiment(tweets):
     url = 'http://twittersentiment.appspot.com/api/bulkClassifyJson'
@@ -19,7 +37,7 @@ def add_sentiment(tweets):
     r = requests.post(url, data=json.dumps(payload), headers=headers)
 
     if r.status_code == requests.codes.ok:
-        sentiment_tweets = json.loads(r.content)['data']
+        sentiment_tweets = json.loads(unicode(r.content, 'LATIN-1'))['data']
     return sentiment_tweets
 
 def get_sentiment(tweets):
@@ -88,3 +106,15 @@ def count_urls(tweets):
             url_count[url] = url_count.get(url, 0) + 1
     url_count = sorted(url_count.items(), key=itemgetter(1), reverse=True)
     return url_count
+
+def get_results(query):
+    params = {}
+    tweets = get_tweets(query)
+    params['tweets'] = add_sentiment(tweets)
+    params['sentiment'] = get_sentiment(params['tweets'])
+    params['tag_count'] = count_tags(params['tweets'])
+    params['user_count'] = count_users(params['tweets'])
+    params['url_count'] = count_urls(params['tweets'])
+    params['activity_count'] = get_activity(params['tweets'])
+    return params
+
