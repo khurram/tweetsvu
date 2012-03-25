@@ -1,6 +1,7 @@
 import json
 import requests
 import Queue
+#from classification import classify_tweet
 from datetime import datetime
 from threading import Thread
 from twitter import Twitter
@@ -8,39 +9,42 @@ from twitter_text import Extractor
 from operator import itemgetter
 
 def get_page_of_tweets(twitter, query, page, queue):
-    queue.put(twitter.search(q=query, rpp=100, p=page)['results'])
+    tweets = add_sentiment(twitter.search(q=query, rpp=100, p=page)['results'])
+    queue.put(tweets)
 
 def get_tweets(query):
-    pages = 7
+    pages = 6
     threads = []
-    results = []
+    tweets = []
     queue = Queue.Queue()
     twitter = Twitter()
 
     for page in range(1, pages):
-	t = Thread(target=get_page_of_tweets, args=(twitter, query, page, queue))
-	threads.append(t)
-	t.start()
+        t = Thread(target=get_page_of_tweets, args=(twitter, query, page, queue))
+        threads.append(t)
+        t.start()
 
     for thread in threads:
         thread.join()
 
     for thread in threads:
-	results += queue.get()
-
-    return results
+        tweets += queue.get()
+    return tweets
 
 def add_sentiment(tweets):
+    print datetime.now(), "start add_sentiment"
     url = 'http://twittersentiment.appspot.com/api/bulkClassifyJson'
     payload = {'data': tweets}
     headers = {'content-type': 'application/json'}
     r = requests.post(url, data=json.dumps(payload), headers=headers)
 
     if r.status_code == requests.codes.ok:
-        sentiment_tweets = json.loads(unicode(r.content, 'LATIN-1'))['data']
+        sentiment_tweets = json.loads(r.content)['data']
+    print datetime.now(), "end add_sentiment"
     return sentiment_tweets
 
 def get_sentiment(tweets):
+    print datetime.now(), "start get_sentiment"
     sentiment = {'positive': 0, 'neutral': 0, 'negative': 0}
     for tweet in tweets:
         if tweet['polarity'] == 4:
@@ -51,9 +55,11 @@ def get_sentiment(tweets):
             sentiment['negative'] += 1
         else:
             raise Exception('Not a valid sentiment value')
+    print datetime.now(), "end get_sentiment"
     return sentiment
 
 def get_activity(tweets):
+    print datetime.now(), "start get_activity"
     activity_count = {}
     for tweet in tweets:
         tweet_time = datetime.strptime(tweet['created_at'], 
@@ -79,38 +85,50 @@ def get_activity(tweets):
                     activity_count[key] = activity_count.get(key, 0) + 1
                     break;
     activity_count = sorted(activity_count.items(), key=itemgetter(0), reverse=True)
+    print datetime.now(), "end get_activity"
     return activity_count
 
 def count_tags(tweets):
+    print datetime.now(), "start count_tags"
     tag_count = {}
     for tweet in tweets:
         tags = Extractor(tweet).extract_hashtags()
         for tag in tags:
             tag_count[tag] = tag_count.get(tag, 0) + 1
     tag_count = sorted(tag_count.items(), key=itemgetter(1), reverse=True)
+    print datetime.now(), "end count_tags"
     return tag_count
 
 def count_users(tweets):
+    print datetime.now(), "start count_users"
     user_count = {}
     for tweet in tweets:
         user = tweet['from_user']
         user_count[user] = user_count.get(user, 0) + 1
     user_count = sorted(user_count.items(), key=itemgetter(1), reverse=True)
+    print datetime.now(), "end count_users"
     return user_count
 
 def count_urls(tweets):
+    print datetime.now(), "start count_urls"
     url_count = {}
     for tweet in tweets:
         urls = Extractor(tweet).extract_urls()
         for url in urls:
             url_count[url] = url_count.get(url, 0) + 1
     url_count = sorted(url_count.items(), key=itemgetter(1), reverse=True)
+    print datetime.now(), "end count_urls"
     return url_count
+
+def do_sentiment(tweets):
+    print datetime.now(), "start do_sentiment"
+    for tweet in tweets:
+        tweet['polarity'] = classify_tweet(tweet['text'])
+    print datetime.now(), "end do_sentiment"
 
 def get_results(query):
     params = {}
-    tweets = get_tweets(query)
-    params['tweets'] = add_sentiment(tweets)
+    params['tweets'] = get_tweets(query)
     params['sentiment'] = get_sentiment(params['tweets'])
     params['tag_count'] = count_tags(params['tweets'])
     params['user_count'] = count_users(params['tweets'])

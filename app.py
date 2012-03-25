@@ -49,16 +49,16 @@ def index():
 
 @app.route('/report')
 def report():
-    return render_template('report.html')
+    return render_template('index.html')
 
 @app.route('/search')
 def search():
+    print datetime.now(), "get query"
     query = request.args.get('q')
-    return render_template('search.html', params=get_results(query))
-
-@app.route('/test')
-def test():
-    return render_template('test.html')
+    print datetime.now(), "go for results"
+    params = get_results(query)
+    print datetime.now(), "get results"
+    return render_template('search.html', params=params)
 
 if __name__ == "__main__":
     app.run(debug=True)
