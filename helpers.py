@@ -9,7 +9,7 @@ from twitter_text import Extractor
 from operator import itemgetter
 
 def get_page_of_tweets(twitter, query, page, queue):
-    tweets = add_sentiment(twitter.search(q=query, rpp=100, p=page)['results'])
+    tweets = twitter.search(q=query, rpp=100, page=page)['results']
     queue.put(tweets)
 
 def get_tweets(query):
@@ -128,7 +128,8 @@ def do_sentiment(tweets):
 
 def get_results(query):
     params = {}
-    params['tweets'] = get_tweets(query)
+    tweets = get_tweets(query)
+    params['tweets'] = add_sentiment(tweets)
     params['sentiment'] = get_sentiment(params['tweets'])
     params['tag_count'] = count_tags(params['tweets'])
     params['user_count'] = count_users(params['tweets'])
