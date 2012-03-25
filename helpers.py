@@ -9,8 +9,7 @@ from twitter_text import Extractor
 from operator import itemgetter
 
 def get_page_of_tweets(twitter, query, page, queue):
-    tweets = twitter.search(q=query, rpp=100, page=page)['results']
-    queue.put(tweets)
+    queue.put(twitter.search(q=query, rpp=100, page=page)['results'])
 
 def get_tweets(query):
     pages = 6
@@ -59,34 +58,13 @@ def get_sentiment(tweets):
     return sentiment
 
 def get_activity(tweets):
-    print datetime.now(), "start get_activity"
-    activity_count = {}
+    active_count = {}
     for tweet in tweets:
-        tweet_time = datetime.strptime(tweet['created_at'], 
-                                        '%a, %d %b %Y %H:%M:%S +0000')
-        now = datetime.utcnow()
-        diff = now - tweet_time
-        periods = (
-            (diff.days / 365, "year", "years"),
-            (diff.days / 30, "month", "months"),
-            (diff.days / 7, "week", "weeks"),
-            (diff.days, "day", "days"),
-            (diff.seconds / 3600, "hour", "hours"),
-            (diff.seconds / 60, "minute", "minutes"),
-            (diff.seconds, "second", "seconds"),
-        )
-        for period, singular, plural in periods:
-            if period:
-                if singular == 'minute' or singular == 'second':
-                    period = 1
-                    singular = 'hour'
-                key = period
-                if singular == 'hour':
-                    activity_count[key] = activity_count.get(key, 0) + 1
-                    break;
-    activity_count = sorted(activity_count.items(), key=itemgetter(0), reverse=True)
-    print datetime.now(), "end get_activity"
-    return activity_count
+        t = datetime.strptime(tweet['created_at'], "%a, %d %b %Y %H:%M:%S +0000").strftime("%B %d, %Y %H:%M")
+        if not t in active_count:
+            active_count[t] = 0
+        active_count[t] += 1
+    return active_count
 
 def count_tags(tweets):
     print datetime.now(), "start count_tags"
@@ -134,6 +112,6 @@ def get_results(query):
     params['tag_count'] = count_tags(params['tweets'])
     params['user_count'] = count_users(params['tweets'])
     params['url_count'] = count_urls(params['tweets'])
-    params['activity_count'] = get_activity(params['tweets'])
+    params['active_count'] = get_activity(params['tweets'])
     return params
 

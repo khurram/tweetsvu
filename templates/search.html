@@ -4,6 +4,7 @@
 <script type="text/javascript">
   google.load('visualization', '1.0', {'packages':['corechart']});
   google.load('visualization', '1.0', {'packages':['gauge']});
+  google.load('visualization', '1.0', {'packages':['annotatedtimeline']});
   
   google.setOnLoadCallback(drawTagChart);
   google.setOnLoadCallback(drawUserChart);
@@ -119,30 +120,31 @@
   
   function drawLine() {
     var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Date');
+    data.addColumn('datetime', 'Date');
     data.addColumn('number', 'Tweets');
-    data.addRows([
-      {% for time in params['activity_count']: %}
-      ['{{ time[0] }} hour ago', {{ time[1] }}],
+    data.addRows([      
+      {% for time,count in params['active_count'].iteritems(): %}
+      [new Date('{{ time }}'), {{ count }}],
       {% endfor %}
     ]);
 
     var options = {
       width: 520, height: 300,
       title: 'Activity',
-      chartArea:{left: 60, top: 40, width: "90%", height: "70%"}
+      chartArea:{left: 60, top: 40, width: "90%", height: "70%"},
+      displayAnnotations: true
     };
 
-    var chart = new google.visualization.LineChart(document.getElementById('activity_graph'));
-      chart.draw(data, options);
-    }  
+    var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('activity_graph'));
+    chart.draw(data, options);
+  }  
 </script>
 
 <div id="tag_count"></div>
 <div id="user_count"></div>
 <div id="url_count"></div>
 <div id="sentiment"></div>
-<div id="activity_graph"></div>
+<div id="activity_graph" style="width: 520px; height: 300px"></div>
 
 {% print params['tweets']|length, " sample tweets"  %}
 
