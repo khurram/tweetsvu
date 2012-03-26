@@ -12,7 +12,7 @@ def get_page_of_tweets(twitter, query, page, queue):
     queue.put(twitter.search(q=query, rpp=100, page=page)['results'])
 
 def get_tweets(query):
-    pages = 6
+    pages = 2
     threads = []
     tweets = []
     queue = Queue.Queue()
@@ -104,6 +104,18 @@ def do_sentiment(tweets):
         tweet['polarity'] = classify_tweet(tweet['text'])
     print datetime.now(), "end do_sentiment"
 
+def sort_tweets(tweets):
+    new_tweets = {}
+    for tweet in tweets:
+        time = tweet['created_at']
+        new_tweets[time] = tweet
+    new_tweets = sorted(new_tweets.items(), key=itemgetter(1), reverse=True)
+    tweets = []
+    for tweet in new_tweets:
+        tweets.append(tweet)
+    return new_tweets
+    
+
 def get_results(query):
     params = {}
     tweets = get_tweets(query)
@@ -113,5 +125,6 @@ def get_results(query):
     params['user_count'] = count_users(params['tweets'])
     params['url_count'] = count_urls(params['tweets'])
     params['active_count'] = get_activity(params['tweets'])
+    tweets = sort_tweets(tweets)
     return params
 

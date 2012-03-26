@@ -97,7 +97,7 @@
 
     google.visualization.events.addListener(chart, 'select', selectHandler)
 
-    function selectHandler(e) {
+    /*function selectHandler(e) {
       sentiment = data.getValue(chart.getSelection()[0].row, 0);
       if (sentiment == 'Positive') {
         sentiment = 'success';
@@ -114,7 +114,7 @@
           rows[i].parentNode.parentNode.className += ' hidden';
         }
       }
-    }
+    }*/
     
   }
   
@@ -129,9 +129,8 @@
     ]);
 
     var options = {
-      width: 520, height: 300,
+      width: 510, height: 220,
       title: 'Activity',
-      chartArea:{left: 60, top: 40, width: "90%", height: "70%"},
       displayAnnotations: true
     };
 
@@ -140,33 +139,98 @@
   }  
 </script>
 
+<div style="position:absolute; left:0; top:50px;">{% print params['tweets']|length, " sample tweets"  %}</div>
+
 <div id="tag_count"></div>
 <div id="user_count"></div>
 <div id="url_count"></div>
 <div id="sentiment"></div>
-<div id="activity_graph" style="width: 520px; height: 300px"></div>
-
-{% print params['tweets']|length, " sample tweets"  %}
+<div id="activity_graph" style="width: 510px; height: 220px"></div>
 
 <div id="results">
-{% for tweet in params['tweets']: %}
-  <div class="row">
-    <hr>
-    <div class="span2 media-grid">
-      <a href="{{ tweet['profile_image_url']|replace('normal', 'bigger') }}">
-        <img src="{{ tweet['profile_image_url']|replace('normal', 'bigger') }}" width="73" class="thumbnail">
-      </a>
-    </div>
+  <input class="search span14 boxtop" placeholder="Type to filter Tweets..." />
 
-    <div class="span12">
-      <h3>
-        {{ tweet['from_user_name'] }}
-        <small>{{ "@" + tweet['from_user'] }}</small>
-        <span class="timesince">{{ tweet['created_at']|time_since }}</span>
-      </h3>
-      <p class="{{ tweet|sentiment_highlight }}">{{ tweet['text']|autolink|safe }}</p>
-    </div>
+  <div id="sortings">
+    <ul class="sort-by">
+      <li class="sort btn" data-sort="name">Sort by user</li>
+      <li class="sort btn" data-sort="time">Sort by time</li>
+      <li class="sort btn" data-sort="sentiment">Sort by sentiment</li>
+    </ul>
+    <ul class="filter">
+      <li class="btn primary" id="filter-none">Show all</li>
+      <li class="btn success" id="filter-positive">Only show positive</li>
+      <li class="btn info" id="filter-neutral">Only show neutral</li>
+      <li class="btn danger" id="filter-negative">Only show negative</li>
+    </ul>
   </div>
+ 
+  <ul class="list">
+  
+  {% for tweet in params['tweets']: %}
+    <li class="row">
+      <hr>
+      
+      <div class="span2 media-grid">
+      <a href="{{ tweet['profile_image_url']|replace('normal', 'bigger') }}"><img src="{{ tweet['profile_image_url']|replace('normal', 'bigger') }}" width="73" class="thumbnail"></a>
+      </div>
+
+      <div class="span12">
+      <h3><span class="name">{{ tweet['from_user_name'] }} <small>{{ "@" + tweet['from_user'] }}</small></span><span class="timesince">{{ tweet['created_at']|time_since }}</span><span style="display:none;" class="time">{{ tweet['created_at']|real_time }}</span></h3>
+      <p class="{{ tweet|sentiment_highlight }}"><span style="display:none;" class="sentiment">{{ tweet|state_sentiment }}</span><span class="description">{{ tweet['text']|autolink|safe }}</span></p>
+    </div>
+    </li>
   {% endfor %}
+  
+  </ul>
+  
 </div>
+
+  <script src="{{ url_for('static', filename='js/list.min.js') }}"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+  <script type="text/javascript">
+      var options = {
+        valueNames: [ 'sentiment', 'name', 'description', 'time' ]
+      };
+
+      var featureList = new List('results', options);
+
+      $('#filter-positive').click(function() {
+          featureList.filter(function(values) {
+              if (values.sentiment == "positive") {
+                  return true;
+              } else {
+                  return false;
+              }
+          });
+          return false;
+      });
+
+      $('#filter-neutral').click(function() {
+          featureList.filter(function(values) {
+              if (values.sentiment == "neutral") {
+                  return true;
+              } else {
+                  return false;
+              }
+          });
+          return false;
+      });
+        
+      $('#filter-negative').click(function() {
+          featureList.filter(function(values) {
+              if (values.sentiment == "negative") {
+                  return true;
+              } else {
+                  return false;
+              }
+          });
+          return false;
+      });
+      
+      $('#filter-none').click(function() {
+          featureList.filter();
+          return false;
+      });
+  </script>
+
 {% endblock %}

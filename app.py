@@ -29,16 +29,32 @@ def time_since(tweet_time, default="just now"):
     return default
 
 @app.template_filter()
+def real_time(tweet_time):
+    tweet_time = datetime.strptime(tweet_time, '%a, %d %b %Y %H:%M:%S +0000')
+    return tweet_time
+
+@app.template_filter()
 def sentiment_highlight(tweet):
     if tweet['polarity'] == 4:
-        return 'alert-message block-message success'
+        return 'alert-message block-message success positive'
     elif tweet['polarity'] == 0:
-        return 'alert-message block-message error'
+        return 'alert-message block-message error negative'
     elif tweet['polarity'] == 2:
-        return 'alert-message block-message info'
+        return 'alert-message block-message info neutral'
     else:
         return 'alert-message block-message warning'
 
+@app.template_filter()
+def state_sentiment(tweet):
+    if tweet['polarity'] == 4:
+        return 'positive'
+    elif tweet['polarity'] == 0:
+        return 'negative'
+    elif tweet['polarity'] == 2:
+        return 'neutral'
+    else:
+        return 'dunno'
+        
 @app.template_filter()
 def autolink(tweet_text):
     return Autolink(tweet_text).auto_link()

@@ -76,6 +76,7 @@ p {
 
 #results {
   float: left;
+  margin-top: 10px;
 }
 
 #results hr {
@@ -96,6 +97,35 @@ p {
 #results .row h3 .timesince {
   float: right;
   font-size: 16px;
+}
+
+#results ul {
+  list-style: none;
+  margin: 0;
+}
+
+.sort-by, .filter {
+  float: left;
+}
+
+.sort-by .btn, .filter .btn {
+  font-size: 12px;
+}
+
+#results ul.filter {
+  margin-left: 10px;
+}
+
+.boxtop {
+  margin-bottom: 10px;
+}
+
+#sortings {
+  margin-bottom: 25px;
+}
+
+.annotatedtimelinetable td {
+  border: 0;
 }
 
 .hidden {
