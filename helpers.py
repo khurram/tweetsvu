@@ -60,7 +60,9 @@ def get_sentiment(tweets):
 def get_activity(tweets):
     active_count = {}
     for tweet in tweets:
-        t = datetime.strptime(tweet['created_at'], "%a, %d %b %Y %H:%M:%S +0000").strftime("%B %d, %Y %H:%M")
+        tweet['created_at'] = tweet['created_at'][:-4] + "0100"
+        print tweet['created_at'];
+        t = datetime.strptime(tweet['created_at'], "%a, %d %b %Y %H:%M:%S +0100").strftime("%B %d, %Y %H:%M")
         if not t in active_count:
             active_count[t] = 0
         active_count[t] += 1

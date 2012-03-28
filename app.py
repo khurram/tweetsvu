@@ -10,7 +10,7 @@ Markdown(app)
 
 @app.template_filter()
 def time_since(tweet_time, default="just now"):
-    tweet_time = datetime.strptime(tweet_time, '%a, %d %b %Y %H:%M:%S +0000')
+    tweet_time = datetime.strptime(tweet_time, '%a, %d %b %Y %H:%M:%S +0100')
     now = datetime.utcnow()
     diff = now - tweet_time
     periods = (

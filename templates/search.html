@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block body %}
+<script type="text/javascript" src="http://dren.ch/js/strftime.js"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
   google.load('visualization', '1.0', {'packages':['corechart']});
@@ -30,7 +31,7 @@
     var chart = new google.visualization.BarChart(document.getElementById('tag_count'));
     chart.draw(data, options);
 
-    google.visualization.events.addListener(chart, 'select', selectHandler)
+    google.visualization.events.addListener(chart, 'select', selectHandler);
 
     function selectHandler(e) {
       query = data.getValue(chart.getSelection()[0].row, 0).slice(1);
@@ -55,6 +56,19 @@
 
     var chart = new google.visualization.BarChart(document.getElementById('user_count'));
     chart.draw(data, options);
+
+    google.visualization.events.addListener(chart, 'select', selectHandler);
+
+    function selectHandler(e) {
+      query = data.getValue(chart.getSelection()[0].row, 0);
+      featureList.filter(function(values) {
+        if (values.username == query) {
+          return true; 
+        } else { 
+          return false; 
+        }
+      });
+    }
   }
 
   function drawUrlChart() {
@@ -136,6 +150,27 @@
 
     var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('activity_graph'));
     chart.draw(data, options);
+    
+    google.visualization.events.addListener(chart, 'rangechange', rangeChanged);
+
+    function rangeChanged(range){ 
+      start = range.start
+      end = range.end
+      var startdate = new Date(start);
+      var enddate = new Date(end);
+      
+      featureList.filter(function(values) {
+        realdate = new Date(values.time);
+        if (realdate > startdate && realdate < enddate) {
+          return true; 
+        } else { 
+          return false; 
+        }
+      });
+
+      
+    } 
+    
   }  
 </script>
 
@@ -175,7 +210,7 @@
       </div>
 
       <div class="span12">
-      <h3><span class="name">{{ tweet['from_user_name'] }} <small>{{ "@" + tweet['from_user'] }}</small></span><span class="timesince">{{ tweet['created_at']|time_since }}</span><span style="display:none;" class="time">{{ tweet['created_at']|real_time }}</span></h3>
+      <h3><span class="name">{{ tweet['from_user_name'] }} <small class="username">{{ "@" + tweet['from_user'] }}</small></span><span class="timesince">{{ tweet['created_at']|time_since }}</span><span style="" class="time">{{ tweet['created_at'] }}</span></h3>
       <p class="{{ tweet|sentiment_highlight }}"><span style="display:none;" class="sentiment">{{ tweet|state_sentiment }}</span><span class="description">{{ tweet['text']|autolink|safe }}</span></p>
     </div>
     </li>
@@ -189,7 +224,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
   <script type="text/javascript">
       var options = {
-        valueNames: [ 'sentiment', 'name', 'description', 'time' ]
+        valueNames: [ 'sentiment', 'name', 'description', 'time', 'username' ]
       };
 
       var featureList = new List('results', options);
