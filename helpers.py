@@ -12,7 +12,7 @@ def get_page_of_tweets(twitter, query, page, queue):
     queue.put(twitter.search(q=query, rpp=100, page=page)['results'])
 
 def get_tweets(query):
-    pages = 2
+    pages = 3
     threads = []
     tweets = []
     queue = Queue.Queue()
